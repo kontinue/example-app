@@ -58,6 +58,9 @@ spec:
     spec:
       containers:
       - image: kontinue/example
+        imagePullPolicy: Always
+        command:
+        - /cnb/lifecycle/launcher
         name: app
         env:
           - name: "REDIS_ADDR"

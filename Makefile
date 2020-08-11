@@ -9,3 +9,5 @@ image:
 
 deploy:
 	kapp deploy -c -a example -f ./kubernetes.yaml
+delete:
+	kapp delete -a example
