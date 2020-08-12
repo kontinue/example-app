@@ -1,83 +1,82 @@
-## example
+## example-app
 
-This example demonstrates how one could run unit tests, build a container image,
-and run an "end-to-end" of an example app leveraging Kontinue as the engine to
-figure out when to run those steps as well as orchestrate the passing of
-variables between them.
+A sample app that just connects to a `redis` instance and serves the result of
+redis' `INFO` command on any endpoint.
 
+### usage
 
-```
+#### local
 
-  unit tests  -->
-    (tekton) 
-
-        build container image --> 
-               (kpack)                
-
-
-                  deploy application  -->
-                         and redis
-                      (deployment+service)                
-
-
-                               integration test -->
-                                 (tekton)       
-
-                                          teardown
-                                      (remove app + dependencies)
-
-```
-
-### Prequisites
-
-This example assumes that the following are already installed in the Kubernetes cluster:
-
-- [`kontinue`]
-- [`kpack`]
-- [`tekton`]
-
-The last two (`kpack` and `tekton`) can be installed as follows:
+1. build the app
 
 ```console
-$ kubectl apply \
-    -f https://storage.googleapis.com/tekton-releases/pipeline/previous/v0.15.0/release.yaml \
-    -f https://github.com/pivotal/kpack/releases/download/v0.0.9/release-0.0.9.yaml
+$ go build -v -i
+github.com/kontinue/example-app
 ```
 
-For `kontinue`, check out the docs at [`kontinue/crds`].
-
-
-### Running
-
-#### Credentials
-
-Create a [`Secret`] that contains the username and password to the container
-image registry that [`kpack`] should push images to:
+2. run redis
 
 ```console
-$ kubectl create secret generic \
-    registry-credentials \
-      --type kubernetes.io/basic-auth \
-      --from-literal username=$DOCKERHUB_USERNAME \
-      --from-literal password=$DOCKERHUB_PASSWORD
+$ docker run --name redis -d -p 6379:6379 redis
 
-$ kubectl annotate secret \
-    registry-credentials \
-    build.pivotal.io/docker=https://index.docker.io/v1/
+$ docker exec redis redis-cli PING
+PING
+PONG
 ```
 
-*(replace `$DOCKERHUB_` with your own credentials)*
+3. run it
 
-#### Submitting the workflow
+```console
+$ ./example-app
+Starting up {RedisAddr:127.0.0.1:6379 Addr:0.0.0.0:8080}
+```
 
-Under `./kontinue`, you'll find the files that contain the Kubernete objects
-that represent our [`Workflow`] and its dependencies.
+4. check that it works
 
-Submit then
+*(in another terminal)*
+
+```console
+$ curl localhost:8080
+Server
+  redis_version:6.0.6
+  redis_git_sha1:00000000
+  redis_git_dirty:0
+  redis_build_id:19d4277f1e8a2fed
+```
 
 
-[`Secret`]: https://kubernetes.io/docs/concepts/configuration/secret/
-[`kontinue`]: https://github.com/kontinue/crds
-[`kpack`]: https://github.com/pivotal/kpack
-[`tekton`]: https://github.com/tektoncd/pipeline
-[`kontinue/crds`]: https://github.com/kontinue/crds
+#### kubernetes
+
+To run the app in Kubernetes, submit the Kubernetes objects described in
+[`./k8s.yaml`](./k8s.yaml).
+
+The following objects will be submited:
+
+
+```
+  NAMESPACE     NAME      KIND      
+  (default)     app       Deployment
+  ^             app       Service   
+  ^             redis     Deployment
+  ^             redis     Service   
+```
+
+To reach the app from your machine, `port-forward` the app's port:
+
+```console
+$ kubectl port-forward service/app 8080:8080
+ Forwarding from 127.0.0.1:8080 -> 8080
+ Forwarding from [::1]:8080 -> 8080
+```
+
+Then, in another terminal, make a request to it:
+
+```console
+$ curl localhost:8080
+Server
+  redis_version:6.0.6
+  redis_git_sha1:00000000
+  redis_git_dirty:0
+  redis_build_id:19d4277f1e8a2fed
+```
+

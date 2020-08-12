@@ -11,7 +11,7 @@ import (
 var (
 	pool   *simpleredis.ConnectionPool
 	config = struct {
-		RedisAddr string `env:"REDIS_ADDR" envDefault:"redis:6379"`
+		RedisAddr string `env:"REDIS_ADDR" envDefault:"127.0.0.1:6379"`
 		Addr      string `env:"ADDR" envDefault:"0.0.0.0:8080"`
 	}{}
 )

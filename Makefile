@@ -5,9 +5,9 @@ test:
 	go test -v
 
 image:
-	pack build kontinue/example
+	pack build kontinue/example-app
 
 deploy:
-	kapp deploy -c -a example -f ./kontinue
+	kapp deploy -c -a example-app -f .
 delete:
-	kapp delete -a example
+	kapp delete -a example-app

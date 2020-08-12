@@ -57,7 +57,7 @@ spec:
         service: app
     spec:
       containers:
-      - image: kontinue/example
+      - image: kontinue/example-app
         imagePullPolicy: Always
         command:
         - /cnb/lifecycle/launcher
