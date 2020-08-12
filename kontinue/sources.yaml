@@ -1,0 +1,19 @@
+apiVersion: experimental.kontinue.io/v1
+kind: GitSource
+metadata:
+  name: app
+spec:
+  repository: kontinue/examples
+
+---
+
+apiVersion: experimental.kontinue.io/v1
+kind: RegistrySource
+metadata:
+  name: redis-6
+spec:
+  repository: library/redis
+  tagFilter: '^6$'
+
+
+# TODO - service account
