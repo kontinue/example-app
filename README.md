@@ -36,7 +36,7 @@ This example assumes that the following are already installed in the Kubernetes 
 - [`kpack`]
 - [`tekton`]
 
-The last two (`kpack` and tekton`) can be installed as follows:
+The last two (`kpack` and `tekton`) can be installed as follows:
 
 ```console
 $ kubectl apply \
