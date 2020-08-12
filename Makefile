@@ -8,6 +8,6 @@ image:
 	pack build kontinue/example
 
 deploy:
-	kapp deploy -c -a example -f ./kubernetes.yaml
+	kapp deploy -c -a example -f ./kontinue
 delete:
 	kapp delete -a example

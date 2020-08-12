@@ -15,5 +15,3 @@ spec:
   repository: library/redis
   tagFilter: '^6$'
 
-
-# TODO - service account

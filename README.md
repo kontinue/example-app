@@ -44,10 +44,12 @@ $ kubectl apply \
     -f https://github.com/pivotal/kpack/releases/download/v0.0.9/release-0.0.9.yaml
 ```
 
-For `kontinue`, checkout the docs at [`kontinue/crds`].
+For `kontinue`, check out the docs at [`kontinue/crds`].
 
 
 ### Running
+
+#### Credentials
 
 Create a [`Secret`] that contains the username and password to the container
 image registry that [`kpack`] should push images to:
@@ -66,8 +68,16 @@ $ kubectl annotate secret \
 
 *(replace `$DOCKERHUB_` with your own credentials)*
 
+#### Submitting the workflow
+
+Under `./kontinue`, you'll find the files that contain the Kubernete objects
+that represent our [`Workflow`] and its dependencies.
+
+Submit then
+
 
 [`Secret`]: https://kubernetes.io/docs/concepts/configuration/secret/
 [`kontinue`]: https://github.com/kontinue/crds
 [`kpack`]: https://github.com/pivotal/kpack
 [`tekton`]: https://github.com/tektoncd/pipeline
+[`kontinue/crds`]: https://github.com/kontinue/crds
