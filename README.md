@@ -8,7 +8,7 @@ redis' `INFO` command on any endpoint.
 #### kubernetes
 
 To run the app in Kubernetes, submit the Kubernetes objects described in
-[`./k8s.yaml`](./k8s.yaml).
+[`config/release.yaml`](./config/release.yaml).
 
 The following objects will be submited:
 
@@ -48,7 +48,7 @@ Server
 
 ```console
 $ go build -v -i
-github.com/kontinue/example-app
+gitlab.eng.vmware.com/tanzu-delivery-pipeline/example-app
 ```
 
 2. run redis

@@ -1,0 +1,5 @@
+#@data/values
+---
+images:
+  app: harbor-repo.vmware.com/tanzu_delivery_pipeline/example-app:latest
+  redis: harbor-repo.vmware.com/dockerhub-proxy-cache/library/redis:latest
