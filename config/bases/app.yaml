@@ -16,11 +16,18 @@ spec:
       labels:
         service: app
     spec:
+      serviceAccountName: example-app
       restartPolicy: Always
       containers:
         - image: #@ data.values.images.app
-          command: [ "/cnb/lifecycle/launcher" ]
           name: app
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - all
           env:
             - name: "REDIS_ADDR"
               value: "redis:6379"
