@@ -4,20 +4,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    service: redis
-  name: redis
+    service: #@ data.values.name + "-redis"
+  name: #@ data.values.name + "-redis"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      service: redis
+      service: #@ data.values.name + "-redis"
   strategy: {}
   template:
     metadata:
       labels:
-        service: redis
+        service: #@ data.values.name + "-redis"
     spec:
-      serviceAccountName: example-app
       containers:
         - image: #@ data.values.images.redis
           name: redis
@@ -37,13 +36,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  labels:
-    service: redis
-  name: redis
+  name: #@ data.values.name + "-redis"
 spec:
   ports:
     - name: "6379"
       port: 6379
       targetPort: 6379
   selector:
-    service: redis
+    service: #@ data.values.name + "-redis"

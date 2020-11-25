@@ -14,11 +14,11 @@ The following objects will be submited:
 
 
 ```
-  NAMESPACE     NAME      KIND      
-  (default)     app       Deployment
-  ^             app       Service   
-  ^             redis     Deployment
-  ^             redis     Service   
+Namespace  Name             Kind            Owner  Conds.  Rs  Ri  Age
+(cluster)  app              Deployment      -      -       -   -   -
+^          app              Service         -      -       -   -   -
+^          app-redis        Deployment      -      -       -   -   -
+^          app-redis        Service         -      -       -   -   -
 ```
 
 To reach the app from your machine, `port-forward` the app's port:
@@ -40,6 +40,26 @@ Server
   redis_build_id:19d4277f1e8a2fed
 ```
 
+
+ps.: the deployments specify no ServiceAccounts. Depending on the Kubernetes
+cluster you're targetting, you _might_ have to allow the default service
+account of the namespace you're deploying into to use pod security policies.
+
+For instance, on TKG:
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: default-sa-restricted-psp
+roleRef:
+  kind: ClusterRole
+  name: psp:vmware-system-restricted
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+  - kind: ServiceAccount
+    name: default
+```
 
 
 #### local

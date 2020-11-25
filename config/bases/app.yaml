@@ -3,20 +3,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app
+  name: #@ data.values.name
   labels:
-    service: app
+    service: #@ data.values.name
 spec:
   replicas: 1
   selector:
     matchLabels:
-      service: app
+      service: #@ data.values.name
   template:
     metadata:
       labels:
-        service: app
+        service: #@ data.values.name
     spec:
-      serviceAccountName: example-app
       restartPolicy: Always
       containers:
         - image: #@ data.values.images.app
@@ -37,12 +36,12 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    service: app
-  name: app
+    service: #@ data.values.name
+  name: #@ data.values.name
 spec:
   ports:
     - name: "8080"
       port: 8080
       targetPort: 8080
   selector:
-    service: app
+    service: #@ data.values.name

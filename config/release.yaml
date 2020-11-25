@@ -14,7 +14,6 @@ spec:
       labels:
         service: app
     spec:
-      serviceAccountName: example-app
       restartPolicy: Always
       containers:
       - image: harbor-repo.vmware.com/tanzu_delivery_pipeline/example-app:latest
@@ -44,41 +43,23 @@ spec:
   selector:
     service: app
 ---
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: example-app
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: example-app-psp
-roleRef:
-  kind: ClusterRole
-  name: psp:vmware-system-restricted
-  apiGroup: rbac.authorization.k8s.io
-subjects:
-- kind: ServiceAccount
-  name: example-app
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    service: redis
-  name: redis
+    service: app-redis
+  name: app-redis
 spec:
   replicas: 1
   selector:
     matchLabels:
-      service: redis
+      service: app-redis
   strategy: {}
   template:
     metadata:
       labels:
-        service: redis
+        service: app-redis
     spec:
-      serviceAccountName: example-app
       containers:
       - image: gcr.io/sys-2b0109it/demo/bitnami/redis
         name: redis
@@ -97,13 +78,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  labels:
-    service: redis
-  name: redis
+  name: app-redis
 spec:
   ports:
   - name: "6379"
     port: 6379
     targetPort: 6379
   selector:
-    service: redis
+    service: app-redis

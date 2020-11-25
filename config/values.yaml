@@ -1,5 +1,6 @@
 #@data/values
 ---
+name: app
 images:
   app: harbor-repo.vmware.com/tanzu_delivery_pipeline/example-app:latest
   redis: gcr.io/sys-2b0109it/demo/bitnami/redis
