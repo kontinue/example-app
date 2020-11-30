@@ -29,7 +29,7 @@ spec:
                 - all
           env:
             - name: "REDIS_ADDR"
-              value: "redis:6379"
+              value: #@ data.values.name + "-redis:6379"
 ---
 
 apiVersion: v1

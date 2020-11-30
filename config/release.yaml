@@ -27,7 +27,7 @@ spec:
             - all
         env:
         - name: REDIS_ADDR
-          value: redis:6379
+          value: app-redis:6379
 ---
 apiVersion: v1
 kind: Service
