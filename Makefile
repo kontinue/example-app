@@ -1,13 +1,18 @@
+REGISTRY ?= kontinue
+
 build:
 	go build -v -i
 
 test:
 	go test -v
 
-image:
-	pack build harbor-repo.vmware.com/tanzu_delivery_pipeline/example-app
+
+image-docker:
+	docker build -t $(REGISTRY)/example-app .
+image-pack:
+	pack build $(REGISTRY)/example-app
 push-image:
-	docker push harbor-repo.vmware.com/tanzu_delivery_pipeline/example-app
+	docker push $(REGISTRY)/example-app
 
 
 deploy:
